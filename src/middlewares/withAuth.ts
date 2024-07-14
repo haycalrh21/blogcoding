@@ -7,7 +7,7 @@ import {
 } from "next/server";
 
 const onlyAdmin = ["admin"];
-const authPage = ["auth", "login"];
+const authPage = ["register", "login"];
 
 export default function withAuth(
 	middleware: NextMiddleware,
@@ -21,12 +21,12 @@ export default function withAuth(
 			secret: process.env.NEXTAUTH_SECRET,
 		});
 
-		// console.log("Token:", token); // Logging untuk debugging
-		// console.log("Current path:", pathname); // Logging untuk debugging
+		console.log("Token:", token); // Logging untuk debugging
+		console.log("Current path:", pathname); // Logging untuk debugging
 
 		// Jika pengguna sudah login dan mencoba mengakses halaman login
 		if (token && authPage.includes(pathname)) {
-			// console.log("Redirecting logged-in user from login page");
+			console.log("Redirecting logged-in user from login page");
 			return NextResponse.redirect(new URL("/", req.url));
 		}
 
@@ -44,7 +44,7 @@ export default function withAuth(
 			return NextResponse.redirect(new URL("/", req.url));
 		}
 
-		// console.log("Allowing request to continue");
+		console.log("Allowing request to continue");
 		return middleware(req, next);
 	};
 }
