@@ -33,7 +33,7 @@ export default function withAuth(
 		// Jika tidak ada token dan mencoba mengakses halaman yang memerlukan autentikasi
 		if (!token && requireAuth.includes(pathname)) {
 			console.log("Redirecting unauthenticated user to login");
-			const url = new URL("/auth/login", req.url);
+			const url = new URL("/login", req.url);
 			url.searchParams.set("callbackUrl", encodeURI(req.url));
 			return NextResponse.redirect(url);
 		}
