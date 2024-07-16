@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 
 export default function App({ Component, pageProps }) {
 	return (
-		<div>
+		<div style={{ background: "#405D72" }} className='min-h-screen'>
 			<SessionProvider>
 				<Navbar />
 				<Component {...pageProps} />;

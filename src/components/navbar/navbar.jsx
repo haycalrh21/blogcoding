@@ -4,6 +4,7 @@ import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
+import Image from "next/image";
 
 export default function Navbar() {
 	const { data: session, status } = useSession();
@@ -15,8 +16,8 @@ export default function Navbar() {
 				<div className='flex items-center justify-between h-16'>
 					<div className='flex items-center'>
 						<div className='flex-shrink-0'>
-							<Link href='/' className='text-white font-bold text-xl'>
-								Logo
+							<Link href='/'>
+								<Image src='/logo.png' alt='Logo' width={40} height={40} />
 							</Link>
 						</div>
 						<div className='hidden md:block'>
@@ -31,7 +32,7 @@ export default function Navbar() {
 									href='/post'
 									className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 								>
-									post
+									Post
 								</Link>
 								<Link
 									href='/services'
@@ -122,6 +123,12 @@ export default function Navbar() {
 								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
 								Home
+							</Link>
+							<Link
+								href='/post'
+								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+							>
+								Post
 							</Link>
 							<Link
 								href='/about'

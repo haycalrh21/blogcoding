@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
+import CopyableCode from "@/components/copyable";
 
 export default function BlogPost() {
 	const [blog, setBlog] = useState(null);
@@ -77,7 +78,19 @@ export default function BlogPost() {
 				<p className='text-gray-600 mb-4'>
 					Published on: {new Date(blog.createdAt).toLocaleDateString()}
 				</p>
-
+				<div className='mb-6'>
+					<h2 className='text-xl font-semibold mb-2'>Author:</h2>
+					<p>{blog.author.name}</p>
+					{blog.author.image && (
+						<Image
+							src={blog.author.image}
+							alt={`${blog.author.name}'s profile picture`}
+							width={50}
+							height={50}
+							className='rounded-full'
+						/>
+					)}
+				</div>
 				<div className='mb-6'>
 					<h2 className='text-xl font-semibold mb-2'>Content</h2>
 					<div dangerouslySetInnerHTML={{ __html: blog.content }} />
@@ -104,25 +117,13 @@ export default function BlogPost() {
 						<h2 className='text-xl font-semibold mb-2'>Source Code:</h2>
 						<p>Language: {blog.sourceCode.language}</p>
 						<pre className='bg-gray-100 p-4 rounded-md overflow-x-auto'>
-							<code
-								dangerouslySetInnerHTML={{ __html: blog.sourceCode.code }}
+							<CopyableCode
+								code={blog.sourceCode.code}
+								language={blog.sourceCode.language}
 							/>
 						</pre>
 					</div>
 				)}
-				<div className='mb-6'>
-					<h2 className='text-xl font-semibold mb-2'>Author:</h2>
-					<p>{blog.author.name}</p>
-					{blog.author.image && (
-						<Image
-							src={blog.author.image}
-							alt={`${blog.author.name}'s profile picture`}
-							width={50}
-							height={50}
-							className='rounded-full'
-						/>
-					)}
-				</div>
 			</div>
 		</>
 	);
