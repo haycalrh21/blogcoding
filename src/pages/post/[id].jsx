@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import { motion } from "framer-motion";
 
 export default function DetailPagePost() {
 	const [post, setPost] = useState(null);
@@ -93,13 +94,40 @@ export default function DetailPagePost() {
 		}
 	};
 
-	if (isLoading) return <div className='text-center py-10'>Loading...</div>;
+	if (isLoading)
+		return (
+			<div className='flex justify-center items-center h-screen'>
+				<div className='animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-blue-500'></div>
+			</div>
+		);
 	if (!post) return <div className='text-center py-10'>Post not found</div>;
 
+	const containerVariants = {
+		hidden: { opacity: 0, y: -20 },
+		visible: {
+			opacity: 1,
+			y: 0,
+			transition: { type: "spring", stiffness: 50, delay: 0.2 },
+		},
+	};
+
 	return (
-		<div className='px-16'>
-			<h1 className='text-2xl md:text-3xl font-bold mb-4'>{post.title}</h1>
-			<div className='flex items-center mb-4'>
+		<motion.div
+			className='p-4 sm:p-8 lg:p-16 bg-gray-800 rounded-lg shadow-md'
+			initial='hidden'
+			animate='visible'
+			variants={containerVariants}
+		>
+			<motion.h1
+				className='text-2xl md:text-3xl font-bold mb-4'
+				variants={containerVariants}
+			>
+				{post.title}
+			</motion.h1>
+			<motion.div
+				className='flex items-center mb-4'
+				variants={containerVariants}
+			>
 				{post.author?.image && (
 					<Image
 						src={post.author.image}
@@ -115,32 +143,38 @@ export default function DetailPagePost() {
 						{new Date(post.createdAt).toLocaleDateString()}
 					</p>
 				</div>
-			</div>
-			<div className='mb-6 flex justify-center gap-4'>
+			</motion.div>
+			<motion.div
+				className='mb-6 flex justify-center gap-4'
+				variants={containerVariants}
+			>
 				{post.images?.map((image, index) => (
-					<Image
-						key={index}
-						src={image}
-						alt={`Post image ${index + 1}`}
-						width={600}
-						height={400}
-						className='object-cover rounded-lg mb-4 max-w-full h-auto'
-					/>
+					<motion.div key={index} whileHover={{ scale: 1.05 }}>
+						<Image
+							src={image}
+							alt={`Post image ${index + 1}`}
+							width={600}
+							height={400}
+							className='object-cover rounded-lg mb-4 max-w-full h-auto'
+						/>
+					</motion.div>
 				))}
-			</div>
-			<div
-				className='prose max-w-none mb-8'
+			</motion.div>
+			<motion.div
+				className='prose max-w-none mb-8 rounded-sm bg-gray-500 p-4'
 				dangerouslySetInnerHTML={{ __html: post.content }}
+				variants={containerVariants}
 			/>
 			{session?.user?.id === post.authorId && (
-				<button
+				<motion.button
 					onClick={handleDelete}
 					className='bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors mb-4'
+					variants={containerVariants}
 				>
 					Delete Post
-				</button>
+				</motion.button>
 			)}
-			<div className='mt-8'>
+			<motion.div className='mt-8' variants={containerVariants}>
 				<h2 className='text-xl font-semibold mb-4'>Comments</h2>
 				<form onSubmit={handleCommentSubmit} className='mb-6'>
 					<div className='flex'>
@@ -149,7 +183,7 @@ export default function DetailPagePost() {
 							value={newComment}
 							onChange={(e) => setNewComment(e.target.value)}
 							placeholder='Write your comment...'
-							className='flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500'
+							className='flex-grow px-4 py-2 border rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-black'
 						/>
 						<button
 							type='submit'
@@ -161,7 +195,11 @@ export default function DetailPagePost() {
 				</form>
 				<div className='space-y-4'>
 					{comments.map((comment) => (
-						<div key={comment.id} className='bg-gray-100 p-4 rounded-lg'>
+						<motion.div
+							key={comment.id}
+							className='bg-gray-100 p-4 rounded-lg'
+							variants={containerVariants}
+						>
 							<div className='flex items-center mb-2'>
 								{comment.author?.image && (
 									<Image
@@ -172,16 +210,18 @@ export default function DetailPagePost() {
 										className='rounded-full mr-2'
 									/>
 								)}
-								<p className='font-semibold'>{comment.author?.name}</p>
+								<p className='font-semibold text-black'>
+									{comment.author?.name}
+								</p>
 							</div>
-							<p>{comment.content}</p>
-							<p className='text-sm text-gray-500 mt-2'>
+							<p className='text-black'>{comment.content}</p>
+							<p className='text-sm text-black mt-2'>
 								{new Date(comment.createdAt).toLocaleString()}
 							</p>
-						</div>
+						</motion.div>
 					))}
 				</div>
-			</div>
-		</div>
+			</motion.div>
+		</motion.div>
 	);
 }

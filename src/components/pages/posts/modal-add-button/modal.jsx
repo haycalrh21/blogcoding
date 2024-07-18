@@ -1,12 +1,52 @@
-import React, { useState } from "react";
-import { useSession } from "next-auth/react"; // Assuming you're using NextAuth for authentication
+import React, { useMemo, useState } from "react";
+import { useSession } from "next-auth/react";
+import { useToast } from "@/components/ui/use-toast";
+import dynamic from "next/dynamic";
+import hljs from "highlight.js";
+import useSWR, { mutate } from "swr";
+
+const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
+import "react-quill/dist/quill.snow.css";
+
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 export default function ModalPost({ onClose }) {
 	const [title, setTitle] = useState("");
 	const [content, setContent] = useState("");
 	const [images, setImages] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
-	const { data: session } = useSession(); // Get the current user session
+	const { data: session } = useSession();
+	const { toast } = useToast();
+
+	const modules = useMemo(
+		() => ({
+			toolbar: [
+				[{ header: [1, 2, false] }],
+				["bold", "italic", "underline", "strike", "blockquote"],
+				[{ list: "ordered" }, { list: "bullet" }],
+				["link", "image", "code-block"],
+				["clean"],
+			],
+			syntax: {
+				highlight: (text) => hljs.highlightAuto(text).value,
+			},
+		}),
+		[]
+	);
+
+	const formats = [
+		"header",
+		"bold",
+		"italic",
+		"underline",
+		"strike",
+		"blockquote",
+		"list",
+		"bullet",
+		"link",
+		"image",
+		"code-block",
+	];
 
 	const handleImageChange = (e) => {
 		const files = Array.from(e.target.files);
@@ -16,7 +56,10 @@ export default function ModalPost({ onClose }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!session) {
-			alert("Anda harus login untuk membuat post");
+			toast({
+				title: "Anda harus login untuk membuat post",
+				description: "Silahkan login terlebih dahulu",
+			});
 			return;
 		}
 
@@ -51,29 +94,43 @@ export default function ModalPost({ onClose }) {
 			const result = await response.json();
 
 			if (response.ok) {
-				alert("Post created successfully");
-				onClose(); // Close the modal after successful submission
+				toast({
+					title: "Post created successfully",
+					description: "Your post has been created successfully.",
+				});
+
+				// Mutate SWR cache to refetch the post list
+				mutate("/api/post/getdata");
+
+				onClose();
 			} else {
-				alert(`Error: ${result.message}`);
+				toast({
+					title: "Failed to create post",
+					description:
+						result.message || "An error occurred while creating the post.",
+				});
 			}
 		} catch (error) {
 			console.error("Error membuat post:", error);
-			alert(`Gagal membuat post: ${error.message}`);
+			toast({
+				title: "Failed to create post",
+				description: "An error occurred while creating the post.",
+			});
 		} finally {
 			setIsLoading(false);
 		}
 	};
 
 	return (
-		<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
-			<div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4 relative'>
+		<div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 overflow-y-auto'>
+			<div className='bg-white p-6 rounded-lg shadow-lg w-full max-w-md mx-4 my-8 relative'>
 				<span
 					className='absolute top-2 right-2 cursor-pointer text-gray-600'
 					onClick={onClose}
 				>
 					&times;
 				</span>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className='max-h-[80vh] overflow-y-auto'>
 					<div className='mb-4'>
 						<label htmlFor='title' className='block text-gray-700'>
 							Title:
@@ -84,23 +141,24 @@ export default function ModalPost({ onClose }) {
 							value={title}
 							onChange={(e) => setTitle(e.target.value)}
 							required
-							className='w-full px-3 py-2 border rounded'
+							className='w-full px-3 py-2 border rounded text-black'
 						/>
 					</div>
 					<div className='mb-4'>
 						<label htmlFor='content' className='block text-gray-700'>
 							Content:
 						</label>
-						<textarea
-							id='content'
+						<ReactQuill
+							theme='snow'
 							value={content}
-							onChange={(e) => setContent(e.target.value)}
-							required
-							className='w-full px-3 py-2 border rounded'
+							onChange={setContent}
+							modules={modules}
+							formats={formats}
+							className='text-black'
 						/>
 					</div>
 					<div className='mb-4'>
-						<label htmlFor='images' className='block text-gray-700'>
+						<label htmlFor='images' className='block text-gray-700 text-black'>
 							Images:
 						</label>
 						<input
@@ -125,7 +183,14 @@ export default function ModalPost({ onClose }) {
 							disabled={isLoading}
 							className='bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-700 disabled:opacity-50'
 						>
-							{isLoading ? "Creating..." : "Create Post"}
+							{isLoading ? (
+								<>
+									<div className='animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white mr-2'></div>
+									Loading...
+								</>
+							) : (
+								"Create Post"
+							)}
 						</button>
 					</div>
 				</form>

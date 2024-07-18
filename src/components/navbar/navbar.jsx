@@ -5,13 +5,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "../ui/button";
 import Image from "next/image";
+import {
+	DropdownMenu,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default function Navbar() {
 	const { data: session, status } = useSession();
 	const [isOpen, setIsOpen] = useState(false);
 
 	return (
-		<nav className='bg-gray-800'>
+		<nav className='bg-gray-700'>
+			{/* <hr /> */}
 			<div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
 				<div className='flex items-center justify-between h-16'>
 					<div className='flex items-center'>
@@ -24,42 +31,63 @@ export default function Navbar() {
 							<div className='ml-10 flex items-center space-x-4'>
 								<Link
 									href='/'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+									className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 								>
 									Home
 								</Link>
 								<Link
 									href='/post'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+									className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 								>
 									Post
 								</Link>
 								<Link
 									href='/services'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+									className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 								>
 									Services
 								</Link>
+
 								<Link
-									href='/contact'
-									className='text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+									href='/about'
+									className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
 								>
-									Contact
+									About
 								</Link>
 							</div>
 						</div>
 					</div>
 					<div className='hidden md:flex items-center space-x-2'>
-						{session ? (
-							<>
-								<Button asChild>
-									<Link href='/dashboard'>Dashboard</Link>
-								</Button>
-								<Button onClick={() => signOut()}>Sign Out</Button>
-							</>
-						) : (
-							<Button onClick={() => signIn()}>Login</Button>
-						)}
+						<DropdownMenu>
+							<DropdownMenuTrigger className='bg-black p-2 rounded-sm hover:bg-zinc-700'>
+								{session ? session.user.name : "Login / Register"}
+							</DropdownMenuTrigger>
+							<DropdownMenuContent>
+								{session ? (
+									<DropdownMenuItem
+										onClick={() => signOut()}
+										className='cursor-pointer'
+									>
+										Sign Out
+									</DropdownMenuItem>
+								) : (
+									<>
+										<DropdownMenuItem
+											onClick={() => signIn()}
+											className='cursor-pointer'
+										>
+											Login
+										</DropdownMenuItem>
+										<DropdownMenuItem
+											onClick={() => (window.location.href = "/register")}
+											className='cursor-pointer'
+										>
+											Register
+										</DropdownMenuItem>
+									</>
+								)}
+							</DropdownMenuContent>
+						</DropdownMenu>
 					</div>
 					<div className='-mr-2 flex md:hidden'>
 						<button
@@ -120,45 +148,46 @@ export default function Navbar() {
 						>
 							<Link
 								href='/'
-								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
 								Home
 							</Link>
 							<Link
 								href='/post'
-								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
 								Post
 							</Link>
 							<Link
 								href='/about'
-								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
 								About
 							</Link>
 							<Link
 								href='/services'
-								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
 								Services
 							</Link>
+
 							<Link
-								href='/contact'
-								className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								href='/about'
+								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 							>
-								Contact
+								About
 							</Link>
 							{session ? (
 								<>
 									<Link
 										href='/dashboard'
-										className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
 									>
 										Dashboard
 									</Link>
 									<button
 										onClick={() => signOut()}
-										className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
+										className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
 									>
 										Sign Out
 									</button>
@@ -166,7 +195,7 @@ export default function Navbar() {
 							) : (
 								<button
 									onClick={() => signIn()}
-									className='text-gray-300 hover:bg-gray-700 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
+									className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
 								>
 									Login
 								</button>

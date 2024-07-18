@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import Head from "next/head";
+import { motion } from "framer-motion";
 import CopyableCode from "@/components/copyable";
 
 export default function BlogPost() {
@@ -43,6 +44,20 @@ export default function BlogPost() {
 		return <div className='text-center mt-10'>Blog not found</div>;
 	}
 
+	const containerVariants = {
+		hidden: { opacity: 0, x: -100 },
+		visible: {
+			opacity: 1,
+			x: 0,
+			transition: { type: "spring", stiffness: 50, delay: 0.2 },
+		},
+	};
+
+	const itemVariants = {
+		hidden: { opacity: 0, y: 20 },
+		visible: { opacity: 1, y: 0, transition: { delay: 0.3, duration: 0.6 } },
+	};
+
 	return (
 		<>
 			<Head>
@@ -73,14 +88,21 @@ export default function BlogPost() {
 				)}
 				<link rel='canonical' href={`https://yourdomain.com/blog/${slug}`} />
 			</Head>
-			<div className='container mx-auto px-4 py-8'>
-				<h1 className='text-3xl font-bold mb-4'>{blog.title}</h1>
-				<p className='text-gray-600 mb-4'>
-					Published on: {new Date(blog.createdAt).toLocaleDateString()}
-				</p>
-				<div className='mb-6'>
-					<h2 className='text-xl font-semibold mb-2'>Author:</h2>
+			<motion.div
+				className='container mx-auto px-4 py-8'
+				variants={containerVariants}
+				initial='hidden'
+				animate='visible'
+			>
+				<motion.h1 className='text-3xl font-bold mb-4' variants={itemVariants}>
+					{blog.title}
+				</motion.h1>
+				<motion.p className='text-white mb-4' variants={itemVariants}>
 					<p>{blog.author.name}</p>
+				</motion.p>
+				<motion.div className='mb-6' variants={itemVariants}>
+					{new Date(blog.createdAt).toLocaleDateString()}
+					{/* <h2 className='text-xl font-semibold mb-2'>Author:</h2> */}
 					{blog.author.image && (
 						<Image
 							src={blog.author.image}
@@ -90,41 +112,42 @@ export default function BlogPost() {
 							className='rounded-full'
 						/>
 					)}
-				</div>
-				<div className='mb-6'>
-					<h2 className='text-xl font-semibold mb-2'>Content</h2>
+				</motion.div>
+				<motion.div className='mb-6' variants={itemVariants}>
+					{/* <h2 className='text-xl font-semibold mb-2'>Content</h2> */}
 					<div dangerouslySetInnerHTML={{ __html: blog.content }} />
-				</div>
+				</motion.div>
 				{blog.images && blog.images.length > 0 && (
-					<div className='mb-6'>
+					<motion.div className='mb-6' variants={itemVariants}>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
 							{blog.images.map((image, index) => (
-								<Image
-									key={index}
-									src={image}
-									alt={`Blog image ${index + 1}`}
-									width={500}
-									height={300}
-									layout='responsive'
-									objectFit='cover'
-								/>
+								<motion.div key={index} whileHover={{ scale: 1.05 }}>
+									<Image
+										src={image}
+										alt={`Blog image ${index + 1}`}
+										width={500}
+										height={300}
+										layout='responsive'
+										objectFit='cover'
+									/>
+								</motion.div>
 							))}
 						</div>
-					</div>
+					</motion.div>
 				)}
 				{blog.sourceCode && (
-					<div className='mb-6'>
+					<motion.div className='mb-6' variants={itemVariants}>
 						<h2 className='text-xl font-semibold mb-2'>Source Code:</h2>
 						<p>Language: {blog.sourceCode.language}</p>
-						<pre className='bg-gray-100 p-4 rounded-md overflow-x-auto'>
+						<pre className=' p-4 rounded-md overflow-x-auto text-black'>
 							<CopyableCode
 								code={blog.sourceCode.code}
 								language={blog.sourceCode.language}
 							/>
 						</pre>
-					</div>
+					</motion.div>
 				)}
-			</div>
+			</motion.div>
 		</>
 	);
 }

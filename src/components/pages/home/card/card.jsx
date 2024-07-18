@@ -4,6 +4,7 @@ import Link from "next/link";
 import prisma from "@/db/db";
 
 export default function TutorialCarousel({ blogs }) {
+	// console.log(blogs);
 	return (
 		<section className='py-16 '>
 			<div className='container mx-auto px-4'>
@@ -14,15 +15,15 @@ export default function TutorialCarousel({ blogs }) {
 					{blogs.map((blog) => (
 						<motion.div
 							key={blog.id}
-							className=' rounded-lg shadow-lg overflow-hidden'
-							style={{ backgroundColor: "#F7E7DC", color: "#405D72" }}
+							className=' rounded-lg shadow-lg overflow-hidden bg-gray-700'
+							// style={{ backgroundColor: "#F7E7DC", color: "#405D72" }}
 							initial={{ opacity: 0, y: 50 }}
 							animate={{ opacity: 1, y: 0 }}
 							transition={{ duration: 0.5 }}
 						>
 							<div className='p-4'>
 								<span className='text-sm font-semibold '>
-									{blog.author.name}
+									By: {blog.author.name}
 								</span>
 								<h3
 									className='text-xl font-bold mt-2 mb-4'
