@@ -145,7 +145,7 @@ export default function DetailPagePost() {
 				</div>
 			</motion.div>
 			<motion.div
-				className='mb-6 flex justify-center gap-4'
+				className='mb-6 flex flex-wrap justify-center gap-4'
 				variants={containerVariants}
 			>
 				{post.images?.map((image, index) => (
@@ -161,10 +161,11 @@ export default function DetailPagePost() {
 				))}
 			</motion.div>
 			<motion.div
-				className='prose max-w-none mb-8 rounded-sm bg-gray-500 p-4'
+				className='prose max-w-full mb-8 rounded-sm bg-gray-500 p-4 overflow-x-auto'
 				dangerouslySetInnerHTML={{ __html: post.content }}
 				variants={containerVariants}
 			/>
+
 			{session?.user?.id === post.authorId && (
 				<motion.button
 					onClick={handleDelete}

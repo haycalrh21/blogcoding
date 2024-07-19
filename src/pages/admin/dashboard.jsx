@@ -1,8 +1,9 @@
 import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import dynamic from "next/dynamic";
 import slugify from "slugify";
+import hljs from "highlight.js";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
@@ -10,10 +11,15 @@ import "react-quill/dist/quill.snow.css";
 export default function CreateBlogPage() {
 	const { data: session } = useSession();
 	const [title, setTitle] = useState("");
-	const [content, setContent] = useState("");
+	const [content, setContent] = useState([]);
 	const [images, setImages] = useState([]);
-	const [code, setCode] = useState("");
+	const [code, setCode] = useState([]);
 	const [language, setLanguage] = useState("");
+
+	useEffect(() => {
+		if (content.length === 0) setContent([""]);
+		if (code.length === 0) setCode([""]);
+	}, []);
 
 	const handleImageChange = (e) => {
 		setImages(Array.from(e.target.files));
@@ -36,12 +42,12 @@ export default function CreateBlogPage() {
 
 		const blogData = {
 			title,
-			content,
+			content, // Sekarang ini adalah array
 			slug,
 			images: imageBase64,
-			code,
+			code, // Sekarang ini adalah array
 			language,
-			authorId: session?.user?.id, // Tambahkan ini
+			authorId: session?.user?.id,
 		};
 
 		try {
@@ -65,21 +71,21 @@ export default function CreateBlogPage() {
 		}
 	};
 
-	const modules = {
-		toolbar: [
-			[{ header: [1, 2, false] }],
-			["bold", "italic", "underline", "strike", "blockquote"],
-			[
-				{ list: "ordered" },
-				{ list: "bullet" },
-				{ indent: "-1" },
-				{ indent: "+1" },
+	const modules = useMemo(
+		() => ({
+			toolbar: [
+				[{ header: [1, 2, false] }],
+				["bold", "italic", "underline", "strike", "blockquote"],
+				[{ list: "ordered" }, { list: "bullet" }],
+				["link", "image", "code-block"],
+				["clean"],
 			],
-			["link", "image"],
-			["clean"],
-		],
-	};
-
+			syntax: {
+				highlight: (text) => hljs.highlightAuto(text).value,
+			},
+		}),
+		[]
+	);
 	const formats = [
 		"header",
 		"bold",
@@ -89,10 +95,30 @@ export default function CreateBlogPage() {
 		"blockquote",
 		"list",
 		"bullet",
-		"indent",
 		"link",
 		"image",
+		"code-block",
 	];
+
+	const handleContentChange = (index, value) => {
+		const newContent = [...content];
+		newContent[index] = value;
+		setContent(newContent);
+	};
+
+	const handleCodeChange = (index, value) => {
+		const newCode = [...code];
+		newCode[index] = value;
+		setCode(newCode);
+	};
+
+	const addContentField = () => {
+		setContent([...content, ""]);
+	};
+
+	const addCodeField = () => {
+		setCode([...code, ""]);
+	};
 	return (
 		<form onSubmit={handleSubmit} className='max-w-2xl mx-auto p-4'>
 			<div className='mb-4'>
@@ -111,13 +137,23 @@ export default function CreateBlogPage() {
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
 					Blog Content
 				</label>
-				<ReactQuill
-					value={content}
-					onChange={setContent}
-					modules={modules}
-					formats={formats}
-					className='h-64 mb-12'
-				/>
+				{content.map((item, index) => (
+					<ReactQuill
+						key={index}
+						value={item}
+						onChange={(value) => handleContentChange(index, value)}
+						modules={modules}
+						formats={formats}
+						className='h-64 mb-12'
+					/>
+				))}
+				<button
+					type='button'
+					onClick={addContentField}
+					className='mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+				>
+					Add Content Field
+				</button>
 			</div>
 			<div className='mb-4'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
@@ -146,13 +182,23 @@ export default function CreateBlogPage() {
 				<label className='block text-gray-700 text-sm font-bold mb-2'>
 					Source Code
 				</label>
-				<ReactQuill
-					value={code}
-					onChange={setCode}
-					modules={modules}
-					formats={formats}
-					className='h-64 mb-12'
-				/>
+				{code.map((item, index) => (
+					<ReactQuill
+						key={index}
+						value={item}
+						onChange={(value) => handleCodeChange(index, value)}
+						modules={modules}
+						formats={formats}
+						className='h-64 mb-12'
+					/>
+				))}
+				<button
+					type='button'
+					onClick={addCodeField}
+					className='mt-2 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded'
+				>
+					Add Code Field
+				</button>
 			</div>
 			<div className='mb-4'>
 				<label className='block text-gray-700 text-sm font-bold mb-2'>

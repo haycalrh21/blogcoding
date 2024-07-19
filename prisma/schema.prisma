@@ -50,7 +50,7 @@ model Account {
 model Blog {
   id         String      @id @default(auto()) @map("_id") @db.ObjectId
   title      String
-  content    String
+  content    String[]
   slug       String      @unique
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
@@ -61,13 +61,12 @@ model Blog {
 }
 
 model SourceCode {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  code     String
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  code     String[]
   language String
-  blogId   String @unique @db.ObjectId
-  blog     Blog   @relation(fields: [blogId], references: [id])
+  blogId   String   @unique @db.ObjectId
+  blog     Blog     @relation(fields: [blogId], references: [id])
 }
-
 model Post {
   id        String    @id @default(auto()) @map("_id") @db.ObjectId
   title     String

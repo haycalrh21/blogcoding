@@ -16,6 +16,10 @@ export default function Navbar() {
 	const { data: session, status } = useSession();
 	const [isOpen, setIsOpen] = useState(false);
 
+	const handleMenuItemClick = () => {
+		setIsOpen(false); // Close the menu
+	};
+
 	return (
 		<nav className='bg-gray-700'>
 			{/* <hr /> */}
@@ -47,7 +51,6 @@ export default function Navbar() {
 								>
 									Services
 								</Link>
-
 								<Link
 									href='/about'
 									className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
@@ -95,7 +98,7 @@ export default function Navbar() {
 							type='button'
 							className='bg-gray-900 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'
 							aria-controls='mobile-menu'
-							aria-expanded='false'
+							aria-expanded={isOpen}
 						>
 							<span className='sr-only'>Open main menu</span>
 							<motion.svg
@@ -149,31 +152,28 @@ export default function Navbar() {
 							<Link
 								href='/'
 								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								onClick={handleMenuItemClick}
 							>
 								Home
 							</Link>
 							<Link
 								href='/post'
 								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								onClick={handleMenuItemClick}
 							>
 								Post
 							</Link>
 							<Link
-								href='/about'
-								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
-							>
-								About
-							</Link>
-							<Link
 								href='/services'
 								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								onClick={handleMenuItemClick}
 							>
 								Services
 							</Link>
-
 							<Link
 								href='/about'
 								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+								onClick={handleMenuItemClick}
 							>
 								About
 							</Link>
@@ -182,11 +182,15 @@ export default function Navbar() {
 									<Link
 										href='/dashboard'
 										className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'
+										onClick={handleMenuItemClick}
 									>
 										Dashboard
 									</Link>
 									<button
-										onClick={() => signOut()}
+										onClick={() => {
+											signOut();
+											handleMenuItemClick();
+										}}
 										className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
 									>
 										Sign Out
@@ -194,7 +198,10 @@ export default function Navbar() {
 								</>
 							) : (
 								<button
-									onClick={() => signIn()}
+									onClick={() => {
+										signIn();
+										handleMenuItemClick();
+									}}
 									className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left'
 								>
 									Login

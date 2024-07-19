@@ -24,6 +24,7 @@ export default function BlogPost() {
 				throw new Error("Blog not found");
 			}
 			const data = await response.json();
+			console.log(data);
 			setBlog(data);
 		} catch (error) {
 			console.error("Error fetching blog:", error);
@@ -62,7 +63,7 @@ export default function BlogPost() {
 		<>
 			<Head>
 				<title>{blog.title} | My Blog</title>
-				<meta
+				{/* <meta
 					name='description'
 					content={blog.excerpt || blog.content.substring(0, 150)}
 				/>
@@ -86,7 +87,7 @@ export default function BlogPost() {
 				{blog.tags && (
 					<meta property='article:tag' content={blog.tags.join(", ")} />
 				)}
-				<link rel='canonical' href={`https://yourdomain.com/blog/${slug}`} />
+				<link rel='canonical' href={`https://yourdomain.com/blog/${slug}`} /> */}
 			</Head>
 			<motion.div
 				className='container mx-auto px-4 py-8'
@@ -113,10 +114,12 @@ export default function BlogPost() {
 						/>
 					)}
 				</motion.div>
-				<motion.div className='mb-6' variants={itemVariants}>
-					{/* <h2 className='text-xl font-semibold mb-2'>Content</h2> */}
-					<div dangerouslySetInnerHTML={{ __html: blog.content }} />
-				</motion.div>
+				{blog.content.map((contentItem, index) => (
+					<motion.div className='mb-6' key={index} variants={itemVariants}>
+						{/* <h2 className='text-xl font-semibold mb-2'>Content</h2> */}
+						<div dangerouslySetInnerHTML={{ __html: contentItem }} />
+					</motion.div>
+				))}
 				{blog.images && blog.images.length > 0 && (
 					<motion.div className='mb-6' variants={itemVariants}>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -135,7 +138,16 @@ export default function BlogPost() {
 						</div>
 					</motion.div>
 				)}
-				{blog.sourceCode && (
+				{blog.sourceCode.code.map((codeItem, index) => (
+					<motion.div className='mb-6' key={index} variants={itemVariants}>
+						<CopyableCode
+							className='p-4 rounded-md overflow-x-auto text-black'
+							code={codeItem} // Pass the individual code item
+						/>
+					</motion.div>
+				))}
+
+				{/* {blog.sourceCode && (
 					<motion.div className='mb-6' variants={itemVariants}>
 						<h2 className='text-xl font-semibold mb-2'>Source Code:</h2>
 						<p>Language: {blog.sourceCode.language}</p>
@@ -146,7 +158,7 @@ export default function BlogPost() {
 							/>
 						</pre>
 					</motion.div>
-				)}
+				)} */}
 			</motion.div>
 		</>
 	);
