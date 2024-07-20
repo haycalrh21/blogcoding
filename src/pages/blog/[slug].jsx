@@ -24,7 +24,7 @@ export default function BlogPost() {
 				throw new Error("Blog not found");
 			}
 			const data = await response.json();
-			console.log(data);
+			// console.log(data);
 			setBlog(data);
 		} catch (error) {
 			console.error("Error fetching blog:", error);

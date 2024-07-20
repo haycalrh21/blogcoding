@@ -3,14 +3,18 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import prisma from "@/db/db";
 
-export default function TutorialCarousel({ blogs }) {
-	// console.log(blogs);
+export default function TutorialCarousel({ data: blogs }) {
+	// console.log(data);
+	// data = blogs;
 	return (
 		<section className='py-16 '>
 			<div className='container mx-auto px-4'>
 				<h2 className='text-3xl md:text-4xl font-bold text-center mb-12'>
 					Coding Tutorials
 				</h2>
+				<div className='text-right mt-4 mb-4 hover:underline cursor-pointer'>
+					<Link href='/blog'>Lihat Selengkapnya</Link>
+				</div>
 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4'>
 					{blogs.map((blog) => (
 						<motion.div
@@ -51,7 +55,7 @@ export default function TutorialCarousel({ blogs }) {
 									whileHover={{ scale: 1.05 }}
 									whileTap={{ scale: 0.95 }}
 								>
-									<Link href={`/blog/${blog.slug}`}>Read Tutorial</Link>
+									<Link href={`/blog/${blog.slug}`}>Baca Selengkapnya</Link>
 								</motion.button>
 							</div>
 						</motion.div>

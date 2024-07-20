@@ -124,12 +124,12 @@ const authOptions = {
 							provider: "email",
 						},
 					});
-					console.log("Account deleted successfully");
+					// console.log("Account deleted successfully");
 				} catch (error) {
 					console.error("Error deleting account:", error);
 				}
 			} else {
-				console.log("No user ID found in token");
+				// console.log("No user ID found in token");
 			}
 		},
 	},

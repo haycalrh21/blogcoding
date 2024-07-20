@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Head from "next/head";
-import { signIn, useSession } from "next-auth/react";
+import { getSession, signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 import { motion } from "framer-motion";
@@ -8,7 +8,7 @@ import { motion } from "framer-motion";
 export default function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const { data: session, update } = useSession();
+	// const { data: session, update } = useSession();
 	const [loading, setLoading] = useState(false);
 	const { toast } = useToast();
 
@@ -18,6 +18,7 @@ export default function Login() {
 		e.preventDefault();
 		setError("");
 		setLoading(true);
+
 		try {
 			const result = await signIn("credentials", {
 				redirect: false,
@@ -29,27 +30,53 @@ export default function Login() {
 				toast({
 					title: "Failed to login",
 					description: "Invalid email or password",
+					duration: 3000, // Increased duration for visibility
+					variant: "destructive", // Consider a more noticeable variant
 				});
-				setLoading(false);
 				setError("Invalid email or password");
 			} else {
-				// Perbarui sesi untuk mendapatkan informasi peran terbaru
-				await update();
-				toast({
-					title: "Login successful",
-					description: "You have successfully logged in.",
-				});
-				// Periksa peran pengguna dan arahkan ke halaman yang sesuai
-				if (session?.user?.role === "ADMIN") {
-					router.push("/admin/dashboard");
+				// Fetch the session after successful login
+				const session = await getSession();
+				if (session && session.user) {
+					const { role } = session.user;
+
+					// Redirect based on role
+					if (role === "ADMIN") {
+						router.push("/admin/dashboard");
+					} else {
+						router.push("/");
+					}
+
+					toast({
+						title: "Success",
+						description: "Login successful",
+						duration: 1000,
+						variant: "success", // Use a success variant for successful login
+					});
 				} else {
-					router.push("/");
+					setError("Session could not be retrieved.");
+					toast({
+						title: "Error",
+						description: "Could not retrieve session after login.",
+						duration: 3000,
+						variant: "destructive",
+					});
 				}
 			}
 		} catch (error) {
+			console.error("Login error:", error);
 			setError("An error occurred. Please try again.");
+			toast({
+				title: "Error",
+				description: "An error occurred. Please try again.",
+				duration: 3000,
+				variant: "destructive",
+			});
+		} finally {
+			setLoading(false);
 		}
 	};
+
 	const containerVariants = {
 		hidden: { opacity: 0, y: -50 },
 		visible: {
