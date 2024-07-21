@@ -1,4 +1,3 @@
-// src/components/ThemeContext.js
 import React, { createContext, useState, useEffect } from "react";
 
 export const ThemeContext = createContext();
@@ -7,14 +6,16 @@ export const ThemeProvider = ({ children }) => {
 	const [darkMode, setDarkMode] = useState(false);
 
 	useEffect(() => {
-		const isDarkMode = localStorage.getItem("darkMode") === "true";
-		setDarkMode(isDarkMode);
+		const savedMode = localStorage.getItem("dark-mode") === "true";
+		setDarkMode(savedMode);
+		document.documentElement.classList.toggle("dark", savedMode);
 	}, []);
 
 	const toggleDarkMode = () => {
-		const newDarkMode = !darkMode;
-		setDarkMode(newDarkMode);
-		localStorage.setItem("darkMode", newDarkMode);
+		const newMode = !darkMode;
+		setDarkMode(newMode);
+		document.documentElement.classList.toggle("dark", newMode);
+		localStorage.setItem("dark-mode", newMode);
 	};
 
 	return (

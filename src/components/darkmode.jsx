@@ -1,7 +1,7 @@
-// src/components/darkmode.js
+// src/components/darkmode.jsx
 import React, { useContext } from "react";
 import { motion } from "framer-motion";
-import { ThemeContext } from "./ThemeContext";
+import { ThemeContext } from "@/context/themecontext"; // Pastikan path ini sesuai
 
 const DarkModeToggle = () => {
 	const { darkMode, toggleDarkMode } = useContext(ThemeContext);
@@ -15,9 +15,7 @@ const DarkModeToggle = () => {
 		>
 			<motion.div
 				className={`bg-white w-5 h-5 rounded-full shadow-md`}
-				animate={{
-					x: darkMode ? 28 : 0,
-				}}
+				animate={{ x: darkMode ? 28 : 0 }}
 				transition={{ type: "spring", stiffness: 300, damping: 20 }}
 			/>
 		</motion.div>
