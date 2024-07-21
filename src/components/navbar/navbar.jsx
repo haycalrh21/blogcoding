@@ -11,6 +11,7 @@ import {
 	DropdownMenuItem,
 	DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import DarkModeToggle from "../darkmode";
 
 export default function Navbar() {
 	const { data: session, status } = useSession();
@@ -61,8 +62,9 @@ export default function Navbar() {
 						</div>
 					</div>
 					<div className='hidden md:flex items-center space-x-2'>
+						<DarkModeToggle />
 						<DropdownMenu>
-							<DropdownMenuTrigger className='bg-black p-2 rounded-sm hover:bg-zinc-700'>
+							<DropdownMenuTrigger className='text-gray-300 hover:bg-gray-900 hover:text-white px-3 py-2 rounded-md text-sm font-medium'>
 								{session ? session.user.name : "Login / Register"}
 							</DropdownMenuTrigger>
 							<DropdownMenuContent>
@@ -149,6 +151,8 @@ export default function Navbar() {
 							transition={{ duration: 0.2, delay: 0.1 }}
 							className='px-2 pt-2 pb-3 space-y-1 sm:px-3'
 						>
+							<DarkModeToggle />
+
 							<Link
 								href='/'
 								className='text-gray-300 hover:bg-gray-900 hover:text-white block px-3 py-2 rounded-md text-base font-medium'

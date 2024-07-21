@@ -1,12 +1,10 @@
 import { useState, useEffect } from "react";
-import dynamic from "next/dynamic";
+
 import Hero from "@/components/pages/home/hero/hero";
-import prisma from "@/db/db";
-import BlogPage from "./blog";
+
 import TutorialCarousel from "@/components/pages/home/card/card";
 
 export default function Home() {
-	const [clientBlogs, setClientBlogs] = useState([]);
 	const [data, setData] = useState([]);
 
 	const fetchdata = async () => {

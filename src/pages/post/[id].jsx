@@ -113,19 +113,19 @@ export default function DetailPagePost() {
 
 	return (
 		<motion.div
-			className='p-4 sm:p-8 lg:p-16 bg-gray-800 rounded-lg shadow-md'
+			className='p-4 sm:p-8 lg:p-16 dark:bg-gray-800  shadow-md'
 			initial='hidden'
 			animate='visible'
 			variants={containerVariants}
 		>
 			<motion.h1
-				className='text-2xl md:text-3xl font-bold mb-4'
+				className='text-2xl md:text-3xl font-bold mb-4 dark:text-white'
 				variants={containerVariants}
 			>
 				{post.title}
 			</motion.h1>
 			<motion.div
-				className='flex items-center mb-4'
+				className='flex items-center mb-4 dark:text-white'
 				variants={containerVariants}
 			>
 				{post.author?.image && (
@@ -161,7 +161,7 @@ export default function DetailPagePost() {
 				))}
 			</motion.div>
 			<motion.div
-				className='prose max-w-full mb-8 rounded-sm bg-gray-500 p-4 overflow-x-auto'
+				className='prose max-w-full mb-8 rounded-sm bg-gray-500 p-4 overflow-x-auto dark:text-white'
 				dangerouslySetInnerHTML={{ __html: post.content }}
 				variants={containerVariants}
 			/>
@@ -176,7 +176,7 @@ export default function DetailPagePost() {
 				</motion.button>
 			)}
 			<motion.div className='mt-8' variants={containerVariants}>
-				<h2 className='text-xl font-semibold mb-4'>Comments</h2>
+				<h2 className='text-xl font-semibold mb-4 dark:text-white'>Comments</h2>
 				<form onSubmit={handleCommentSubmit} className='mb-6'>
 					<div className='flex'>
 						<input
@@ -188,7 +188,7 @@ export default function DetailPagePost() {
 						/>
 						<button
 							type='submit'
-							className='bg-blue-500 text-white px-6 py-2 rounded-r-lg hover:bg-blue-600 transition-colors'
+							className='bg-blue-500 dark:text-white px-6 py-2 rounded-r-lg hover:bg-blue-600 transition-colors'
 						>
 							Comment
 						</button>

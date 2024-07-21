@@ -15,30 +15,35 @@ export default function About() {
 			title: "Toko Online",
 			description: "Toko online baju",
 			link: "https://tokoxyz-xyz.vercel.app/",
+			img: "/tokobaju.png",
 		},
 		{
 			id: 2,
 			title: "WebCraftr",
 			description: "Template Website",
 			link: "https://webcrafter.vercel.app/",
+			img: "/webcrafter.png",
 		},
 		{
 			id: 3,
 			title: "Kaca Film",
 			description: "Landing Page Kaca File",
 			link: "https://landingpagekacafilm.vercel.app/",
+			img: "/kacafilm.png",
 		},
 		{
 			id: 4,
 			title: "Landing Page Mobil",
 			description: "Landing Page Mobil",
 			link: "https://landingpagemobil.vercel.app/",
+			img: "/mobil.png",
 		},
 		{
 			id: 5,
 			title: "Portofolio",
 			description: "Example Portofolio",
 			link: "https://porto-iknow.vercel.app/",
+			img: "/sampleporto.png",
 		},
 	];
 
@@ -96,6 +101,15 @@ export default function About() {
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}
 						>
+							{item.img && (
+								<Image
+									src={item.img}
+									alt={item.title}
+									width={300}
+									height={200}
+									className='rounded-lg mb-4'
+								/>
+							)}
 							<h3 className='text-xl font-semibold mb-2'>{item.title}</h3>
 							<p className='text-lg'>{item.description}</p>
 						</motion.a>

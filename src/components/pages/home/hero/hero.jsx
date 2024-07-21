@@ -15,7 +15,7 @@ export default function Hero() {
 						transition={{ duration: 0.5 }}
 					>
 						<h1 className='text-4xl md:text-5xl font-bold mb-4 leading-tight'>
-							Tutorial Coding, Open Source & Post.
+							Tutorial Coding, Open Source, & Komunitas Forum.
 						</h1>
 						<p className='text-lg mb-6 text-gray-300'>
 							🚀 Situs untuk belajar pemrograman dan menemukan kode sumber untuk

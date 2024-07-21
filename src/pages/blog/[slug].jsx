@@ -60,63 +60,46 @@ export default function BlogPost() {
 	};
 
 	return (
-		<>
-			<Head>
-				<title>{blog.title} | My Blog</title>
-				{/* <meta
-					name='description'
-					content={blog.excerpt || blog.content.substring(0, 150)}
-				/>
-				<meta name='keywords' content={`blog, article, ${blog.title}`} />
-				<meta property='og:title' content={blog.title} />
-				<meta
-					property='og:description'
-					content={blog.excerpt || blog.content.substring(0, 150)}
-				/>
-				<meta property='og:image' content={blog.images && blog.images[0]} />
-				<meta property='og:type' content='article' />
-				<meta
-					property='article:published_time'
-					content={new Date(blog.createdAt).toISOString()}
-				/>
-				<meta
-					property='article:modified_time'
-					content={new Date(blog.updatedAt).toISOString()}
-				/>
-				<meta property='article:author' content={blog.author.name} />
-				{blog.tags && (
-					<meta property='article:tag' content={blog.tags.join(", ")} />
-				)}
-				<link rel='canonical' href={`https://yourdomain.com/blog/${slug}`} /> */}
-			</Head>
-			<motion.div
-				className='container mx-auto px-4 py-8'
-				variants={containerVariants}
-				initial='hidden'
-				animate='visible'
-			>
-				<motion.h1 className='text-3xl font-bold mb-4' variants={itemVariants}>
+		<motion.div
+			className='min-h-screen bg-white dark:bg-gray-800 text-black dark:text-white'
+			variants={containerVariants}
+			initial='hidden'
+			animate='visible'
+		>
+			<div className='container mx-auto px-4 py-8'>
+				<motion.h1
+					className='text-3xl font-bold mb-4 dark:text-white'
+					variants={itemVariants}
+				>
 					{blog.title}
 				</motion.h1>
-				<motion.p className='text-white mb-4' variants={itemVariants}>
+				<motion.p
+					className='text-gray-600 dark:text-gray-300 mb-4'
+					variants={itemVariants}
+				>
 					<p>{blog.author.name}</p>
 				</motion.p>
-				<motion.div className='mb-6' variants={itemVariants}>
+				<motion.div
+					className='mb-6 text-gray-600 dark:text-gray-300'
+					variants={itemVariants}
+				>
 					{new Date(blog.createdAt).toLocaleDateString()}
-					{/* <h2 className='text-xl font-semibold mb-2'>Author:</h2> */}
 					{blog.author.image && (
 						<Image
 							src={blog.author.image}
 							alt={`${blog.author.name}'s profile picture`}
 							width={50}
 							height={50}
-							className='rounded-full'
+							className='rounded-full mt-2'
 						/>
 					)}
 				</motion.div>
 				{blog.content.map((contentItem, index) => (
-					<motion.div className='mb-6' key={index} variants={itemVariants}>
-						{/* <h2 className='text-xl font-semibold mb-2'>Content</h2> */}
+					<motion.div
+						className='mb-6 dark:text-white'
+						key={index}
+						variants={itemVariants}
+					>
 						<div dangerouslySetInnerHTML={{ __html: contentItem }} />
 					</motion.div>
 				))}
@@ -141,25 +124,12 @@ export default function BlogPost() {
 				{blog.sourceCode.code.map((codeItem, index) => (
 					<motion.div className='mb-6' key={index} variants={itemVariants}>
 						<CopyableCode
-							className='p-4 rounded-md overflow-x-auto text-black'
-							code={codeItem} // Pass the individual code item
+							className='p-4 rounded-md overflow-x-auto bg-gray-100 dark:bg-gray-700 text-white dark:text-white'
+							code={codeItem}
 						/>
 					</motion.div>
 				))}
-
-				{/* {blog.sourceCode && (
-					<motion.div className='mb-6' variants={itemVariants}>
-						<h2 className='text-xl font-semibold mb-2'>Source Code:</h2>
-						<p>Language: {blog.sourceCode.language}</p>
-						<pre className=' p-4 rounded-md overflow-x-auto text-black'>
-							<CopyableCode
-								code={blog.sourceCode.code}
-								language={blog.sourceCode.language}
-							/>
-						</pre>
-					</motion.div>
-				)} */}
-			</motion.div>
-		</>
+			</div>
+		</motion.div>
 	);
 }

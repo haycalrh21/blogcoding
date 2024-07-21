@@ -15,7 +15,7 @@ function CopyableCode({ code, language }) {
 
 	return (
 		<div className='relative'>
-			<pre className='bg-gray-700 p-4 rounded overflow-x-auto'>
+			<pre className='bg-slate-500 text-black dark:text-white dark:bg-gray-700 p-4 rounded overflow-x-auto'>
 				<code dangerouslySetInnerHTML={{ __html: code }} />
 			</pre>
 			<button
