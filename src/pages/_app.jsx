@@ -1,12 +1,12 @@
+// src/pages/_app.jsx
 import Footer from "@/components/footer/footer";
 import Navbar from "@/components/navbar/navbar";
 import { Toaster } from "@/components/ui/toaster";
 import "@/styles/globals.css";
 import { SessionProvider } from "next-auth/react";
 import { useRouter } from "next/router";
-import { ThemeProvider } from "@/components/ThemeContext";
+import { ThemeProvider, ThemeContext } from "@/components/ThemeContext";
 import { useContext } from "react";
-import { ThemeContext } from "@/components/ThemeContext";
 
 function AppContent({ Component, pageProps }) {
 	const router = useRouter();
@@ -16,7 +16,7 @@ function AppContent({ Component, pageProps }) {
 
 	return (
 		<div
-			className={`min-h-screen bg-white dark:bg-gray-800 text-black dark:text-white  ${
+			className={`min-h-screen bg-white dark:bg-gray-800 text-black dark:text-white ${
 				darkMode ? "dark" : ""
 			}`}
 		>
