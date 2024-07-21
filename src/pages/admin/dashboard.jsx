@@ -7,6 +7,7 @@ import hljs from "highlight.js";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 import "react-quill/dist/quill.snow.css";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function CreateBlogPage() {
 	const { data: session } = useSession();
@@ -15,6 +16,8 @@ export default function CreateBlogPage() {
 	const [images, setImages] = useState([]);
 	const [code, setCode] = useState([]);
 	const [language, setLanguage] = useState("");
+
+	const { toast } = useToast();
 
 	useEffect(() => {
 		if (content.length === 0) setContent([""]);
@@ -61,9 +64,19 @@ export default function CreateBlogPage() {
 
 			const result = await response.json();
 			if (response.ok) {
-				alert("Blog created successfully");
+				toast({
+					title: "Blog created successfully",
+					description: "Your blog has been created successfully.",
+					duration: 3000,
+					variant: "success",
+				});
 			} else {
-				alert(`Error: ${result.message}`);
+				toast({
+					title: "Failed to create blog",
+					description: result.message,
+					duration: 3000,
+					variant: "destructive",
+				});
 			}
 		} catch (error) {
 			console.error("Error creating blog:", error);

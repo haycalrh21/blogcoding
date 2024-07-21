@@ -6,9 +6,9 @@ export default withAuth(
 		// Middleware ini sekarang lebih sederhana karena sebagian besar logika ada di withAuth
 		return NextResponse.next();
 	},
-	["dashboard", "admin"] // Daftar path yang memerlukan autentikasi
+	["dashboard", "admin", "register"] // Daftar path yang memerlukan autentikasi
 );
 
 export const config = {
-	matcher: ["/dashboard/:path*", "/admin/:path*", "/login"],
+	matcher: ["/dashboard/:path*", "/admin/:path*", "/login", "/register"],
 };

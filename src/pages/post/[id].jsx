@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
+import { useToast } from "@/components/ui/use-toast";
 
 export default function DetailPagePost() {
 	const [post, setPost] = useState(null);
@@ -11,6 +12,7 @@ export default function DetailPagePost() {
 	const { data: session } = useSession();
 	const [isLoading, setIsLoading] = useState(true);
 	const router = useRouter();
+	const { toast } = useToast();
 
 	const { id } = router.query;
 
@@ -67,7 +69,10 @@ export default function DetailPagePost() {
 			});
 
 			if (!response.ok) {
-				throw new Error("Failed to post comment");
+				toast({
+					title: "Failed to post comment",
+					description: "Harus login.",
+				});
 			}
 
 			const data = await response.json();

@@ -34,13 +34,13 @@ export default function withAuth(
 		if (!token && requireAuth.includes(pathname)) {
 			// console.log("Redirecting unauthenticated user to login");
 			const url = new URL("/login", req.url);
-			url.searchParams.set("callbackUrl", encodeURI(req.url));
+			// url.searchParams.set("callbackUrl", encodeURI(req.url));
 			return NextResponse.redirect(url);
 		}
 
 		// Jika pengguna bukan admin dan mencoba mengakses halaman admin
 		if (token && onlyAdmin.includes(pathname) && token.role !== "ADMIN") {
-			// console.log("Redirecting non-admin user from admin page");
+			console.log("Redirecting non-admin user from admin page");
 			return NextResponse.redirect(new URL("/", req.url));
 		}
 
