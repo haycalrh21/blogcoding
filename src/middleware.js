@@ -1,12 +1,13 @@
-import withAuth from "./middlewares/withAuth";
+// src/pages/_middleware.ts
+import withAuth from "@/middlewares/withAuth";
 import { NextResponse } from "next/server";
 
 export default withAuth(
 	function middleware(req) {
-		// Middleware ini sekarang lebih sederhana karena sebagian besar logika ada di withAuth
+		console.log("Request Path:", req.nextUrl.pathname); // Tambahkan logging ini
 		return NextResponse.next();
 	},
-	["dashboard", "admin"] // Daftar path yang memerlukan autentikasi
+	["dashboard", "admin"]
 );
 
 export const config = {

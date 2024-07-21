@@ -83,6 +83,7 @@ const authOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	callbacks: {
 		async jwt({ token, user }) {
+			console.log("JWT Callback - Token:", token); // Tambahkan logging ini
 			if (user?.id) {
 				token.id = user.id;
 			}
@@ -98,6 +99,7 @@ const authOptions = {
 			return token;
 		},
 		async session({ session, token }) {
+			console.log("Session Callback - Token:", token); // Tambahkan logging ini
 			if (token?.id) {
 				session.user.id = token.id;
 			}
@@ -111,26 +113,6 @@ const authOptions = {
 				session.expiresAt = token.expiresAt;
 			}
 			return session;
-		},
-		async signOut({ token }) {
-			console.log("signOut callback triggered");
-			console.log("Token:", token);
-
-			if (token?.id) {
-				try {
-					await prisma.account.deleteMany({
-						where: {
-							userId: token.id,
-							provider: "email",
-						},
-					});
-					// console.log("Account deleted successfully");
-				} catch (error) {
-					console.error("Error deleting account:", error);
-				}
-			} else {
-				// console.log("No user ID found in token");
-			}
 		},
 	},
 
