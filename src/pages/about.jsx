@@ -63,12 +63,12 @@ export default function About() {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4'>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-white text-black dark:bg-gray-800 dark:text-white p-4'>
 			<motion.div
 				initial={{ opacity: 0, scale: 0.8 }}
 				animate={{ opacity: 1, scale: 1 }}
 				transition={{ duration: 0.5 }}
-				className='flex flex-col items-center bg-gray-800 p-6 rounded-lg shadow-lg w-full max-w-md mb-8'
+				className='flex flex-col items-center bg-slate-200 text-black dark:bg-gray-500 dark:text-white p-6 rounded-lg shadow-lg w-full max-w-md mb-8'
 			>
 				<Image
 					src='/profile.jpg'
@@ -96,7 +96,7 @@ export default function About() {
 							href={item.link}
 							target='_blank'
 							rel='noopener noreferrer'
-							className='bg-gray-800 p-4 rounded-lg shadow-md hover:bg-gray-700 transition-colors'
+							className='bg-slate-200 text-black dark:bg-gray-500 dark:text-white p-4 rounded-lg shadow-md transition-colors'
 							variants={itemVariants}
 							whileHover={{ scale: 1.05 }}
 							whileTap={{ scale: 0.95 }}

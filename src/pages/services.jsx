@@ -52,8 +52,10 @@ export default function Services() {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-gray-900 text-white p-4'>
-			<h1 className='text-3xl font-semibold mb-8'>Our Services</h1>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-800 text-white p-4'>
+			<h1 className='text-3xl text-black font-semibold mb-8 dark:text-white'>
+				Our Services
+			</h1>
 			<motion.div
 				className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl'
 				variants={containerVariants}
@@ -63,7 +65,7 @@ export default function Services() {
 				{services.map((service) => (
 					<motion.div
 						key={service.id}
-						className='bg-gray-800 p-6 rounded-lg shadow-md hover:bg-gray-700 transition-colors'
+						className='bg-gray-800 text-white dark:bg-slate-200 dark:text-black p-6 rounded-lg shadow-md  transition-colors'
 						variants={itemVariants}
 						whileHover={{ scale: 1.05 }}
 						whileTap={{ scale: 0.95 }}
