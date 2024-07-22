@@ -66,6 +66,9 @@ export default function BlogPost() {
 			initial='hidden'
 			animate='visible'
 		>
+			<Head>
+				<title>Coding Blog - {blog.title}</title>
+			</Head>
 			<div className='container mx-auto px-4 py-8'>
 				<motion.h1
 					className='text-3xl font-bold mb-4 dark:text-white'

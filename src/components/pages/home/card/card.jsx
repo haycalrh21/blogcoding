@@ -10,7 +10,7 @@ export default function TutorialCarousel({ data }) {
 		// Simulasi delay loading data
 		const timer = setTimeout(() => {
 			setIsLoading(false);
-		}, 3000); // Misalnya 1 detik
+		}, 1000); // Misalnya 1 detik
 
 		return () => clearTimeout(timer);
 	}, []);
@@ -48,7 +48,7 @@ export default function TutorialCarousel({ data }) {
 								animate={{ opacity: 1, y: 0 }}
 								transition={{ duration: 0.5 }}
 							>
-								<Skeleton className='w-[100px] h-[20px] rounded-full' />
+								{/* <Skeleton className='w-[100px] h-[20px] rounded-full' /> */}
 
 								<div className='p-4'>
 									<span className='text-sm font-semibold dark:text-gray-300'>

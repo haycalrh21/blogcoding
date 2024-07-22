@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function Services() {
 	const services = [
@@ -53,6 +54,10 @@ export default function Services() {
 
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-800 text-white p-4'>
+			<Head>
+				<title>Coding Blog - Services</title>
+			</Head>
+
 			<h1 className='text-3xl text-black font-semibold mb-8 dark:text-white'>
 				Our Services
 			</h1>

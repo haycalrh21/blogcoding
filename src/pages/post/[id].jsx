@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { useToast } from "@/components/ui/use-toast";
+import Head from "next/head";
 
 export default function DetailPagePost() {
 	const [post, setPost] = useState(null);
@@ -123,6 +124,9 @@ export default function DetailPagePost() {
 			animate='visible'
 			variants={containerVariants}
 		>
+			<Head>
+				<title> Coding Blog - {post.title}</title>
+			</Head>
 			<motion.h1
 				className='text-2xl md:text-3xl font-bold mb-4 dark:text-white'
 				variants={containerVariants}

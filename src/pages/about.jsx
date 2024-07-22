@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
+import Head from "next/head";
 
 export default function About() {
 	const data = {
@@ -64,6 +65,10 @@ export default function About() {
 
 	return (
 		<div className='flex flex-col items-center justify-center min-h-screen bg-white text-black dark:bg-gray-800 dark:text-white p-4'>
+			<Head>
+				<title>Coding Blog - About</title>
+			</Head>
+
 			<motion.div
 				initial={{ opacity: 0, scale: 0.8 }}
 				animate={{ opacity: 1, scale: 1 }}

@@ -13,6 +13,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/components/ui/pagination";
+import Head from "next/head";
 
 const fetcher = (url) => fetch(url).then((res) => res.json());
 
@@ -76,6 +77,9 @@ export default function PagePost() {
 
 	return (
 		<div className='px-4 sm:px-8 lg:px-16 dark:bg-gray-900'>
+			<Head>
+				<title>Coding Blog - Post</title>
+			</Head>
 			<motion.div
 				initial={{ opacity: 0, y: -20 }}
 				animate={{ opacity: 1, y: 0 }}

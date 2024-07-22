@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Hero from "@/components/pages/home/hero/hero";
 
 import TutorialCarousel from "@/components/pages/home/card/card";
+import Head from "next/head";
 
 export default function Home() {
 	const [data, setData] = useState([]);
@@ -19,6 +20,9 @@ export default function Home() {
 
 	return (
 		<main suppressHydrationWarning={true}>
+			<Head>
+				<title>Coding Blog - Home</title>
+			</Head>
 			<Hero />
 			{/* Render components only after the component has mounted on the client */}
 			<TutorialCarousel data={data} />
