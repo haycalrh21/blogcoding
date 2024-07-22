@@ -1,9 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import prisma from "@/db/db";
+import { Skeleton } from "@/components/ui/skeleton";
 
-export default function TutorialCarousel({ data: blogs }) {
+export default function TutorialCarousel({ data }) {
+	const [isLoading, setIsLoading] = useState(true);
+
+	useEffect(() => {
+		// Simulasi delay loading data
+		const timer = setTimeout(() => {
+			setIsLoading(false);
+		}, 3000); // Misalnya 1 detik
+
+		return () => clearTimeout(timer);
+	}, []);
+
 	return (
 		<section className='py-16 dark:bg-gray-900'>
 			<div className='container mx-auto px-4'>
@@ -14,45 +25,63 @@ export default function TutorialCarousel({ data: blogs }) {
 					<Link href='/blog'>Lihat Selengkapnya</Link>
 				</div>
 				<div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4'>
-					{blogs.map((blog) => (
-						<motion.div
-							key={blog.id}
-							className='rounded-lg shadow-lg overflow-hidden bg-slate-200 dark:bg-gray-800'
-							initial={{ opacity: 0, y: 50 }}
-							animate={{ opacity: 1, y: 0 }}
-							transition={{ duration: 0.5 }}
-						>
-							<div className='p-4'>
-								<span className='text-sm font-semibold dark:text-gray-300'>
-									By: {blog.author.name}
-								</span>
-								<h3
-									className='text-xl font-bold mt-2 mb-4 dark:text-white'
-									dangerouslySetInnerHTML={{ __html: blog.title }}
-								/>
-								{blog.images && blog.images.length > 0 && (
-									<div className='my-4 grid grid-cols-1 gap-2'>
-										{blog.images.map((image, imgIndex) => (
-											<img
-												key={imgIndex}
-												src={image}
-												alt={`Image ${imgIndex}`}
-												className='w-full h-auto rounded-lg shadow-md mb-2'
-												style={{ objectFit: "cover", maxHeight: "150px" }}
-											/>
-										))}
-									</div>
-								)}
-								<motion.button
-									className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2'
-									whileHover={{ scale: 1.05 }}
-									whileTap={{ scale: 0.95 }}
+					{isLoading ? (
+						<>
+							{Array.from({ length: 4 }).map((_, index) => (
+								<div
+									key={index}
+									className='rounded-lg shadow-lg overflow-hidden bg-slate-200 dark:bg-gray-800 p-4'
 								>
-									<Link href={`/blog/${blog.slug}`}>Baca Selengkapnya</Link>
-								</motion.button>
-							</div>
-						</motion.div>
-					))}
+									<Skeleton className='w-[100px] h-[20px] rounded-full mb-4' />
+									<Skeleton className='h-6 w-full mb-4' />
+									<Skeleton className='h-32 w-full mb-4' />
+									<Skeleton className='h-8 w-full' />
+								</div>
+							))}
+						</>
+					) : (
+						data.map((blog) => (
+							<motion.div
+								key={blog.id}
+								className='rounded-lg shadow-lg overflow-hidden bg-slate-200 dark:bg-gray-800'
+								initial={{ opacity: 0, y: 50 }}
+								animate={{ opacity: 1, y: 0 }}
+								transition={{ duration: 0.5 }}
+							>
+								<Skeleton className='w-[100px] h-[20px] rounded-full' />
+
+								<div className='p-4'>
+									<span className='text-sm font-semibold dark:text-gray-300'>
+										By: {blog.author.name}
+									</span>
+									<h3
+										className='text-xl font-bold mt-2 mb-4 dark:text-white'
+										dangerouslySetInnerHTML={{ __html: blog.title }}
+									/>
+									{blog.images && blog.images.length > 0 && (
+										<div className='my-4 grid grid-cols-1 gap-2'>
+											{blog.images.map((image, imgIndex) => (
+												<img
+													key={imgIndex}
+													src={image}
+													alt={`Image ${imgIndex}`}
+													className='w-full h-auto rounded-lg shadow-md mb-2'
+													style={{ objectFit: "cover", maxHeight: "150px" }}
+												/>
+											))}
+										</div>
+									)}
+									<motion.button
+										className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-2'
+										whileHover={{ scale: 1.05 }}
+										whileTap={{ scale: 0.95 }}
+									>
+										<Link href={`/blog/${blog.slug}`}>Baca Selengkapnya</Link>
+									</motion.button>
+								</div>
+							</motion.div>
+						))
+					)}
 				</div>
 			</div>
 		</section>

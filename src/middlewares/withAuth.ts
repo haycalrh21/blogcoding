@@ -39,12 +39,12 @@ export default function withAuth(
 		}
 
 		// Jika pengguna bukan admin dan mencoba mengakses halaman admin
-		if (token && onlyAdmin.includes(pathname) && token.role !== "ADMIN") {
-			console.log("Redirecting non-admin user from admin page");
-			return NextResponse.redirect(new URL("/", req.url));
-		}
+		// if (token && onlyAdmin.includes(pathname) && token.role !== "ADMIN") {
+		// 	console.log("Redirecting non-admin user from admin page");
+		// 	return NextResponse.redirect(new URL("/", req.url));
+		// }
 
-		console.log("Allowing request to continue");
+		// console.log("Allowing request to continue");
 		return middleware(req, next);
 	};
 }

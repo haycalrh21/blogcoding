@@ -86,7 +86,7 @@ const Footer = () => {
 				</div>
 			</div>
 			<div className='mt-10 text-center text-gray-400'>
-				&copy; {new Date().getFullYear()} Nama Perusahaan. All rights reserved.
+				&copy; {new Date().getFullYear()} CodingBlog. All rights reserved.
 			</div>
 		</footer>
 	);

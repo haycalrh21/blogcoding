@@ -83,7 +83,7 @@ const authOptions = {
 	secret: process.env.NEXTAUTH_SECRET,
 	callbacks: {
 		async jwt({ token, user }) {
-			console.log("JWT Callback - Token:", token); // Tambahkan logging ini
+			// console.log("JWT Callback - Token:", token); // Tambahkan logging ini
 			if (user?.id) {
 				token.id = user.id;
 			}
@@ -99,7 +99,7 @@ const authOptions = {
 			return token;
 		},
 		async session({ session, token }) {
-			console.log("Session Callback - Token:", token); // Tambahkan logging ini
+			// console.log("Session Callback - Token:", token); // Tambahkan logging ini
 			if (token?.id) {
 				session.user.id = token.id;
 			}
